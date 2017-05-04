@@ -11,6 +11,19 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
   end
 
+  def update
+    @group = Group.find(params[:group_id])
+    @post = Post.find(params[:id])
+    if current_user = @post.user
+      @post.update(post_params)
+      flash[:notice] = "Post Updated"
+      redirect_to account_posts_path
+    else
+      render :edit
+    end
+  end
+
+
   def create
     @group = Group.find(params[:group_id])
     @post = Post.new(post_params)
